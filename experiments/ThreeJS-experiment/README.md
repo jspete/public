@@ -1,4 +1,4 @@
 **Old experiment**
 Trying to setup ThreeJS scene, 3d model, moving camera and AJAX
 
-Demo available: [jry.fr/exp](http://www.jry/exp/ "jry.fr/exp")
+Demo available: [jry.fr/exp](https://www.jry.fr/exp/ "jry.fr/exp")
