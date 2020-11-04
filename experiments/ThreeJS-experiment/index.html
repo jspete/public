@@ -1,0 +1,78 @@
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JS - Experiment</title>
+  <link href="https://fonts.googleapis.com/css?family=Arvo:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <section id="loading-screen" style="">
+    <div id="load-dots">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div id="loading-text">
+      <p><a>Plane showcase loading</a></p>
+      <p><a>Experiment by JS.</a></p>
+    </div>
+  </section>
+  <section id="menu" style="">
+  </section>
+
+  <section id="details" style="">
+    <p><a class="title"><span class="">Supermarine Spitfire</span></a></p>
+    <p><a>Chasseur monoplace</a></p>
+  </section>
+  <p><a class="camera1 btn" href="#">Camera</a></p>
+
+  <!-- Scripts below -->
+  <!-- Jquery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="js/loading.js"></script>
+
+  <!-- ThreeJS -->
+  <script src="js/r115.three.min.js"></script>
+  <script src="js/OrbitControls.js"></script>
+  <script src="js/RectAreaLightUniformsLib.js"></script>
+  <script src="js/GLTFLoader.js"></script>
+  <script>
+    //console.clear();
+  </script>
+
+  <script src="js/movingcamera.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/structure.js"></script>
+  <script src="js/structure_details.js"></script>
+  <script src="js/lightning.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/effects.js"></script>
+
+  <!-- Stats -->
+  <script>
+    javascript: (function() {
+      var script = document.createElement('script');
+      script.onload = function() {
+        var stats = new Stats();
+        document.body.appendChild(stats.dom);
+        requestAnimationFrame(function loop() {
+          stats.update();
+          requestAnimationFrame(loop)
+        });
+      };
+      script.src = '//mrdoob.github.io/stats.js/build/stats.min.js';
+      document.head.appendChild(script);
+    })()
+  </script>
+</body>
+
+</html>
