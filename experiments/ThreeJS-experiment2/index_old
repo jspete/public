@@ -1,0 +1,206 @@
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JS - The room experiment</title>
+      <link rel="stylesheet" href="css/style.css">
+      <style>
+          body  {
+              margin: 0;
+              overflow: hidden;
+          }
+          canvas {
+              width: 100%;
+              height; 100%;
+          }
+      </style>
+  </head>
+  <body>
+      
+      
+    <!-- Scripts below -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/107/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/GLTFLoader.js"></script>
+      
+    <script>
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0x313131 );
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,0.1,1000);
+    // FOV, ratio width, ratio height
+
+        
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        
+        window.addEventListener('resize',function()
+            {
+                var width = window.innerWidth;
+                var height = window.innerHeight;
+                renderer.setSize(width,height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            })
+        
+        controls = new THREE.OrbitControls(camera,renderer.domElement);
+        
+        //grid helper
+        var size = 40;
+        var divisions = 40;
+        var gridHelper = new THREE.GridHelper( size, divisions );
+        scene.add( gridHelper );
+        
+        var loader = new THREE.GLTFLoader();
+        
+        loader.load( 'assets/labthings/labscene.gltf', handle_load);
+        
+        function handle_load(gltf){
+            mesh = gltf.scene.children[0];
+            mesh.scale.set(0.03,0.03,0.03);
+            
+            scene.add(mesh);
+            mesh.position.z = -7;
+            mesh.rotation.z = Math.PI;
+            
+        }
+        
+        loader.load( 'assets/maintable/scene.gltf', handle_load);
+        
+        //const model = scene.children[0];
+        //model.position.z = 10;
+        
+        //create shape geo
+        var geometry = new THREE.BoxGeometry(2,2,2);
+        
+        // cubmat
+        var cubeMaterials = 
+            [
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('assets/cubeMaterials/box-texture.png'),side: THREE.DoubleSide}),
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('assets/cubeMaterials/box-texture.png'),side: THREE.DoubleSide}),
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('assets/cubeMaterials/box-texture.png'),side: THREE.DoubleSide}),
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('assets/cubeMaterials/box-texture.png'),side: THREE.DoubleSide}),
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('assets/cubeMaterials/box-texture.png'),side: THREE.DoubleSide}),
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('assets/cubeMaterials/box-texture.png'),side: THREE.DoubleSide})
+            ];
+        
+        //create material, color or image texture
+        /*
+        var material = new THREE.MeshBasicMaterial(
+            {
+                color:0xFFFFFF,
+                wireframe:true,
+                
+            }
+        );
+        */
+        
+        var material = new THREE.MeshFaceMaterial(cubeMaterials);
+        
+        var cube = new THREE.Mesh(geometry,material);
+        scene.add (cube);
+        
+        var geometry = new THREE.PlaneGeometry( 25, 25, 32 );
+        var texture = new THREE.TextureLoader().load( 'assets/floorwood.png' );
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.offset.set( 0, 0 );
+        texture.repeat.set( 11, 11 );
+        
+        var material = new THREE.MeshLambertMaterial( {map:texture, side: THREE.DoubleSide} );
+        var floor = new THREE.Mesh( geometry, material );
+        //floor.position.y =-10;
+        floor.position.y =-1;
+        floor.rotation.x = Math.PI / 2;
+        scene.add(floor);
+        
+        var geometry = new THREE.PlaneGeometry( 20, 5, 32 );
+        var texture = new THREE.TextureLoader().load( 'assets/vintage-floral-background.png' );
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.offset.set( 0, 0 );
+        texture.repeat.set( 4, 0.5 );
+        
+        var material = new THREE.MeshLambertMaterial( {map:texture, side: THREE.DoubleSide} );
+        var wall1 = new THREE.Mesh( geometry, material );
+        wall1.position.x =10;
+        wall1.position.y =1.5;
+        wall1.rotation.y = Math.PI / 2;
+        scene.add(wall1);
+        
+        var geometry = new THREE.PlaneGeometry( 20, 5, 32 );
+        var material = new THREE.MeshBasicMaterial( {color: 0x606000, side: THREE.DoubleSide} );
+        var wall2 = new THREE.Mesh( geometry, material );
+        wall2.position.x =-10;
+        wall2.position.y =1.5;
+        wall2.rotation.y = Math.PI / 2;
+        scene.add(wall2);
+        
+        var geometry = new THREE.PlaneGeometry( 20, 5, 32 );
+        var material = new THREE.MeshBasicMaterial( {color: 0x606000, side: THREE.DoubleSide} );
+        var wall3 = new THREE.Mesh( geometry, material );
+        //wall3.position.x =-10;
+        wall3.position.y =1.5;
+        wall3.position.z =-10;
+        wall3.rotation.z = Math.PI;
+        scene.add(wall3);
+        
+        var geometry = new THREE.PlaneGeometry( 20, 5, 32 );
+        var material = new THREE.MeshBasicMaterial( {color: 0x606000, side: THREE.DoubleSide} );
+        var wall4 = new THREE.Mesh( geometry, material );
+        //wall4.position.x =-10;
+        wall4.position.y =1.5;
+        wall4.position.z =10;
+        wall4.rotation.z = Math.PI;
+        scene.add(wall4);
+        
+        camera.position.z=3;
+        camera.position.y=3;
+        
+        
+        var ambientLight = new THREE.AmbientLight(0xFFFFFF,1)
+        scene.add (ambientLight);
+        
+        var light1 = new THREE.PointLight(0xfff4dc,1.2,50);
+        scene.add(light1);
+        
+        /* Pointlight helper
+        var pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
+        pointLight.position.set( 10, 10, 10 );
+        scene.add( pointLight );
+        var sphereSize = 1;
+        var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
+        scene.add( pointLightHelper );
+        */
+        
+        var light2 = new THREE.PointLight(0xFF0040,4,50);
+        //scene.add(light2);
+        
+        //game logic
+        var update = function()
+        {
+            //cube.rotation.x += 0.01;
+            //cube.rotation.y += 0.01;
+            var time = Date.now() * 0.00005;
+
+        };
+
+        //draw scene
+        var render = function()
+        {
+            renderer.render(scene, camera);
+        };
+
+        //run gameloop (update, render, repeat)
+        var GameLoop = function()
+        {
+            requestAnimationFrame(GameLoop);
+            update();
+            render();
+        };
+        
+        GameLoop();
+    </script>
+      
+  </body>
+</html>
